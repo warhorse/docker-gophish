@@ -18,7 +18,6 @@ WORKDIR /go/src/github.com/gophish/gophish
 COPY . .
 RUN go get -v && go build -v
 
-
 # Runtime container
 FROM debian:stable-slim
 
