@@ -37,7 +37,9 @@ COPY --from=build-golang /go/src/github.com/warhorse/gophish/ ./
 COPY --from=build-js /build/static/js/dist/ ./static/js/dist/
 COPY --from=build-js /build/static/css/dist/ ./static/css/dist/
 COPY --from=build-golang /go/src/github.com/warhorse/gophish/config.json ./
-RUN chown app. config.json
+COPY ./docker-entrypoint.sh /opt/gophish
+RUN chmod +x /opt/gophish/docker-entrypoint.sh
+RUN chown app. config.json docker-entrypoint.sh
 
 RUN setcap 'cap_net_bind_service=+ep' /opt/gophish/gophish
 
@@ -45,8 +47,6 @@ USER app
 RUN sed -i 's/127.0.0.1/0.0.0.0/g' config.json
 RUN touch config.json.tmp
 
-COPY ./docker-entrypoint.sh /opt/
-RUN chmod +x /opt/docker-entrypoint.sh
 
 EXPOSE 3333 8080 8443 80
 
