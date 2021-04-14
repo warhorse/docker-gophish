@@ -1,3 +1,5 @@
+FROM node:latest AS build-js
+
 ENV GITHUB_USER="gophish"
 ENV GOPHISH_REPOSITORY="github.com/${GITHUB_USER}/gophish"
 ENV PROJECT_DIR="${GOPATH}/src/${GOPHISH_REPOSITORY}"
@@ -5,8 +7,6 @@ ENV PROJECT_DIR="${GOPATH}/src/${GOPHISH_REPOSITORY}"
 ARG BUILD_RFC3339="1970-01-01T00:00:00Z"
 ARG COMMIT="local"
 ARG VERSION="v0.0.1"
-
-FROM node:latest AS build-js
 
 RUN npm install gulp gulp-cli -g
 
@@ -65,6 +65,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
   org.label-schema.url="https://github.com/war-horse/docker-gophish" \
   org.label-schema.vcs-ref=$VCS_REF \
   org.label-schema.vcs-url="https://github.com/war-horse/docker-gophish" \
-  org.label-schema.vendor="war-horse" \
+  org.label-schema.vendor="warhorse" \
   org.label-schema.version=$VERSION \
   org.label-schema.schema-version="1.0"
