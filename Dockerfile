@@ -2,16 +2,16 @@ FROM node:latest AS build-js
 
 RUN npm install gulp gulp-cli -g
 
+RUN git clone https://github.com/gophish/gophish /build
 WORKDIR /build
-COPY . .
 RUN npm install --only=dev
 RUN gulp
 
 # Build Golang binary
 FROM golang:1.15.2 AS build-golang
 
+RUN git clone https://github.com/gophish/gophish /go/src/github.com/gophish/gophish
 WORKDIR /go/src/github.com/gophish/gophish
-COPY . .
 RUN go get -v && go build -v
 
 # Runtime container
