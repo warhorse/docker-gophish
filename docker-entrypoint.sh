@@ -67,6 +67,14 @@ if [ -n "${DB_FILE_PATH+set}" ] ; then
         cat config.json.tmp > config.json
 fi
 
+# Url custom ID
+if [ -n "${URL_ID+set}" ] ; then
+    jq -r \
+        --arg URL_ID "${URL_ID}" \
+        '.url_id = $URL_ID' config.json > config.json.tmp && \
+        cat config.json.tmp > config.json
+fi
+
 echo "Runtime configuration: "
 cat config.json
 

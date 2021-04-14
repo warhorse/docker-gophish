@@ -2,7 +2,7 @@ FROM node:latest AS build-js
 
 RUN npm install gulp gulp-cli -g
 
-RUN git clone https://github.com/gophish/gophish /build
+RUN git clone https://github.com/warhorse/gophish /build
 WORKDIR /build
 RUN npm install --only=dev
 RUN gulp
@@ -10,8 +10,9 @@ RUN gulp
 # Build Golang binary
 FROM golang:1.15.2 AS build-golang
 
-RUN git clone https://github.com/gophish/gophish /go/src/github.com/gophish/gophish
-WORKDIR /go/src/github.com/gophish/gophish
+RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish
+WORKDIR /go/src/github.com/warhorse/gophish
+RUN sed -i '130d;' models/campaign.go
 RUN go get -v && go build -v
 
 # Runtime container
@@ -33,10 +34,10 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /opt/gophish
-COPY --from=build-golang /go/src/github.com/gophish/gophish/ ./
+COPY --from=build-golang /go/src/github.com/warhorse/gophish/ ./
 COPY --from=build-js /build/static/js/dist/ ./static/js/dist/
 COPY --from=build-js /build/static/css/dist/ ./static/css/dist/
-COPY --from=build-golang /go/src/github.com/gophish/gophish/config.json ./
+COPY --from=build-golang /go/src/github.com/warhorse/gophish/config.json ./
 RUN chown app. config.json
 
 RUN setcap 'cap_net_bind_service=+ep' /opt/gophish/gophish
