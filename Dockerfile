@@ -1,13 +1,5 @@
 FROM node:latest AS build-js
 
-ENV GITHUB_USER="gophish"
-ENV GOPHISH_REPOSITORY="github.com/${GITHUB_USER}/gophish"
-ENV PROJECT_DIR="${GOPATH}/src/${GOPHISH_REPOSITORY}"
-
-ARG BUILD_RFC3339="1970-01-01T00:00:00Z"
-ARG COMMIT="local"
-ARG VERSION="v0.0.1"
-
 RUN npm install gulp gulp-cli -g
 
 WORKDIR /build
@@ -24,6 +16,14 @@ RUN go get -v && go build -v
 
 # Runtime container
 FROM debian:stable-slim
+
+ENV GITHUB_USER="gophish"
+ENV GOPHISH_REPOSITORY="github.com/${GITHUB_USER}/gophish"
+ENV PROJECT_DIR="${GOPATH}/src/${GOPHISH_REPOSITORY}"
+
+ARG BUILD_RFC3339="1970-01-01T00:00:00Z"
+ARG COMMIT="local"
+ARG VERSION="v0.0.1"
 
 RUN useradd -m -d /opt/gophish -s /bin/bash app
 
