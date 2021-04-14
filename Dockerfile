@@ -12,7 +12,6 @@ FROM golang:1.15.2 AS build-golang
 
 RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish
 WORKDIR /go/src/github.com/warhorse/gophish
-RUN sed -i '130d;' models/campaign.go
 RUN go get -v && go build -v
 
 # Runtime container
