@@ -50,7 +50,7 @@ RUN touch config.json.tmp
 
 EXPOSE 3333 8080 8443 80
 
-CMD ["/opt/docker-entrypoint.sh"]
+CMD ["/opt/gophish/docker-entrypoint.sh"]
 
 STOPSIGNAL SIGKILL
 
