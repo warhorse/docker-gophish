@@ -44,11 +44,10 @@ RUN chown app. config.json docker-entrypoint.sh
 RUN setcap 'cap_net_bind_service=+ep' /opt/gophish/gophish
 
 USER app
-RUN sed -i 's/127.0.0.1/0.0.0.0/g' config.json
 RUN touch config.json.tmp
 
 
-EXPOSE 3333 8080 8443 80
+EXPOSE 3333 8080
 
 CMD ["/opt/gophish/docker-entrypoint.sh"]
 
