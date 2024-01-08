@@ -29,6 +29,9 @@ RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/
 # Changing rid value
 RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
 
+
+
+
 RUN go get -v && go build -v
 
 # Runtime container
@@ -50,6 +53,8 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /opt/gophish
+COPY ./files/phish.go ./controllers/phish.go
+COPY ./files/404.html ./templates/
 COPY --from=build-golang /go/src/github.com/warhorse/gophish/ ./
 COPY --from=build-js /build/static/js/dist/ ./static/js/dist/
 COPY --from=build-js /build/static/css/dist/ ./static/css/dist/
