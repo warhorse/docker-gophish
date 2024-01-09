@@ -1,6 +1,6 @@
 FROM node:latest AS build-js
 
-ENV GITHUB_USER="fin3ss3g0d"
+ENV EGP_USER="fin3ss3g0d"
 
 RUN npm install gulp gulp-cli -g
 
@@ -13,9 +13,9 @@ RUN gulp
 FROM golang:1.15.2 AS build-golang
 
 RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish \
-    && git clone https://github.com/${GITHUB_USER}/evilgophish /go/src/github.com/warhorse/${GITHUB_USER}/evilgophish
+    && git clone https://github.com/${EGP_USER}/evilgophish /go/src/github.com/warhorse/${EGP_USER}/evilgophish
     
-RUN cp -r /go/src/github.com/warhorse/${GITHUB_USER}/evilgophish/gophish /go/src/github.com/warhorse/gophish
+RUN cp -r /go/src/github.com/warhorse/${EGP_USER}/evilgophish/gophish /go/src/github.com/warhorse/gophish
 
 WORKDIR /go/src/github.com/warhorse/gophish
 
