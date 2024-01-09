@@ -17,21 +17,21 @@ RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/go
     
 RUN cp -r /go/src/github.com/warhorse/${EGP_USER}/evilgophish/gophish /go/src/github.com/warhorse/gophish
 
-# Stripping X-Gophish 
+# # Stripping X-Gophish 
 
-RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request_test.go
-RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog.go
-RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog_test.go
-RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request.go
+# RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request_test.go
+# RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog.go
+# RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog_test.go
+# RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request.go
 
-# Stripping X-Gophish-Signature
-RUN sed -i 's/X-Gophish-Signature/X-Signature/g' webhook/webhook.go
+# # Stripping X-Gophish-Signature
+# RUN sed -i 's/X-Gophish-Signature/X-Signature/g' webhook/webhook.go
 
-# Changing server name
-RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/config.go
+# # Changing server name
+# RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/config.go
 
-# Changing rid value
-RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
+# # Changing rid value
+# RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
 
 WORKDIR /go/src/github.com/warhorse/gophish
 
