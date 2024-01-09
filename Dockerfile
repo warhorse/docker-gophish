@@ -17,8 +17,6 @@ RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/go
     
 RUN cp -r /go/src/github.com/warhorse/${EGP_USER}/evilgophish/gophish /go/src/github.com/warhorse/gophish
 
-WORKDIR /go/src/github.com/warhorse/gophish
-
 # Stripping X-Gophish 
 
 RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request_test.go
@@ -34,6 +32,8 @@ RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/
 
 # Changing rid value
 RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
+
+WORKDIR /go/src/github.com/warhorse/gophish
 
 RUN go get -v && go build -v
 
