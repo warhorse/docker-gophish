@@ -12,28 +12,25 @@ FROM golang:1.15.2 AS build-golang
 
 ENV EGP_USER="fin3ss3g0d"
 
-RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish \
-    && git clone https://github.com/${EGP_USER}/evilgophish /go/src/github.com/warhorse/${EGP_USER}/evilgophish
-    
-RUN cp -r /go/src/github.com/warhorse/${EGP_USER}/evilgophish/gophish /go/src/github.com/warhorse/gophish
-
-# # Stripping X-Gophish 
-
-# RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request_test.go
-# RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog.go
-# RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog_test.go
-# RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request.go
-
-# # Stripping X-Gophish-Signature
-# RUN sed -i 's/X-Gophish-Signature/X-Signature/g' webhook/webhook.go
-
-# # Changing server name
-# RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/config.go
-
-# # Changing rid value
-# RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
+RUN git clone https://github.com/${EGP_USER}/evilgophish /go/src/github.com/warhorse/gophish 
 
 WORKDIR /go/src/github.com/warhorse/gophish
+
+# Stripping X-Gophish 
+
+RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request_test.go
+RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog.go
+RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog_test.go
+RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request.go
+
+# Stripping X-Gophish-Signature
+RUN sed -i 's/X-Gophish-Signature/X-Signature/g' webhook/webhook.go
+
+# Changing server name
+RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/config.go
+
+# Changing rid value
+RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
 
 RUN go get -v && go build -v
 
