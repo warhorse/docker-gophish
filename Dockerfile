@@ -35,7 +35,7 @@ RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/
 # Changing rid value
 RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
 
-RUN go get -v && go build -v -mod=mod
+RUN go get -v && go build -v
 
 # Runtime container
 FROM debian:stable-slim
