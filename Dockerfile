@@ -1,5 +1,7 @@
 FROM node:latest AS build-js
 
+ENV GITHUB_USER="fin3ss3g0d"
+
 RUN npm install gulp gulp-cli -g
 
 RUN git clone https://github.com/warhorse/gophish /build
@@ -10,7 +12,11 @@ RUN gulp
 # Build Golang binary
 FROM golang:1.15.2 AS build-golang
 
-RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish
+RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish \
+    && git clone https://github.com/${GITHUB_USER}/evilgophish /go/src/github.com/warhorse/${GITHUB_USER}/evilgophish
+    
+RUN cp -r /go/src/github.com/warhorse/${GITHUB_USER}/evilgophish/gophish /go/src/github.com/warhorse/gophish
+
 WORKDIR /go/src/github.com/warhorse/gophish
 
 # Stripping X-Gophish 
@@ -29,10 +35,7 @@ RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/
 # Changing rid value
 RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
 
-
-
-
-RUN go get -v && go build -v
+RUN go get -v && go build -v -mod=mod
 
 # Runtime container
 FROM debian:stable-slim
