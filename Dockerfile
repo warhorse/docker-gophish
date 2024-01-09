@@ -1,7 +1,5 @@
 FROM node:latest AS build-js
 
-ENV EGP_USER="fin3ss3g0d"
-
 RUN npm install gulp gulp-cli -g
 
 RUN git clone https://github.com/warhorse/gophish /build
@@ -11,6 +9,8 @@ RUN gulp
 
 # Build Golang binary
 FROM golang:1.15.2 AS build-golang
+
+ENV EGP_USER="fin3ss3g0d"
 
 RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish \
     && git clone https://github.com/${EGP_USER}/evilgophish /go/src/github.com/warhorse/${EGP_USER}/evilgophish
