@@ -12,7 +12,9 @@ FROM golang:1.15.2 AS build-golang
 
 ENV EGP_USER="fin3ss3g0d"
 
-RUN git clone https://github.com/${EGP_USER}/evilgophish /go/src/github.com/warhorse/gophish 
+RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish \
+    && git clone https://github.com/${EGP_USER}/evilgophish /go/src/github.com/warhorse/evilgophish \
+    && cp -r /go/src/github.com/warhorse/evilgophish/gophish/. /go/src/github.com/warhorse/gophish
 
 WORKDIR /go/src/github.com/warhorse/gophish
 
