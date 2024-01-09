@@ -10,8 +10,14 @@ RUN gulp
 # Build Golang binary
 FROM golang:1.15.2 AS build-golang
 
-RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish
+ENV EGP_USER="fin3ss3g0d"
+
+RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish \
+    && git clone https://github.com/${EGP_USER}/evilgophish /go/src/github.com/warhorse/evilgophish \
+    && cp -r /go/src/github.com/warhorse/evilgophish/gophish/. /go/src/github.com/warhorse/gophish
+
 WORKDIR /go/src/github.com/warhorse/gophish
+
 RUN go get -v && go build -v
 
 # Runtime container
@@ -33,6 +39,8 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /opt/gophish
+COPY ./files/phish.go ./controllers/phish.go
+COPY ./files/404.html ./templates/
 COPY --from=build-golang /go/src/github.com/warhorse/gophish/ ./
 COPY --from=build-js /build/static/js/dist/ ./static/js/dist/
 COPY --from=build-js /build/static/css/dist/ ./static/css/dist/
