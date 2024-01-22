@@ -79,5 +79,5 @@ echo "Runtime configuration: "
 cat config.json
 
 # start gophish
-./gophish
+./stealth-gophish
 
