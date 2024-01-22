@@ -10,10 +10,11 @@ RUN gulp
 # Build Golang binary
 FROM golang:1.15.2 AS build-golang
 
-RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish
-WORKDIR /go/src/github.com/warhorse/gophish
+ENV EGP_USER="fin3ss3g0d"
 
-# Stripping X-Gophish 
+RUN git clone https://github.com/warhorse/gophish /go/src/github.com/warhorse/gophish 
+
+WORKDIR /go/src/github.com/warhorse/gophish
 
 RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request_test.go
 RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog.go
@@ -23,13 +24,16 @@ RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request.go
 # Stripping X-Gophish-Signature
 RUN sed -i 's/X-Gophish-Signature/X-Signature/g' webhook/webhook.go
 
-# Changing server name
+# Changing servername
 RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/config.go
 
 # Changing rid value
 RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d71f646207b598c5ecac0aea21de540dc79fe5d1
 COPY ./files/phish.go ./controllers/phish.go
 
 RUN go get -v && go build -v
@@ -53,7 +57,11 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /opt/gophish
+<<<<<<< HEAD
 
+=======
+COPY ./files/404.html ./templates/
+>>>>>>> d71f646207b598c5ecac0aea21de540dc79fe5d1
 COPY --from=build-golang /go/src/github.com/warhorse/gophish/ ./
 COPY --from=build-js /build/static/js/dist/ ./static/js/dist/
 COPY --from=build-js /build/static/css/dist/ ./static/css/dist/

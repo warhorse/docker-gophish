@@ -86,6 +86,7 @@ func WithContactAddress(addr string) PServerOption {
 // Overwrite net.https Error with a custom one to set our own headers
 // Go's internal Error func returns text/plain so browser's won't render the html
 func customError(w http.ResponseWriter, error string, code int) {
+<<<<<<< HEAD
 		w.Header().Set("Server", "AmazonS3")
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Header().Set("X-Content-Type-Options", "nosniff")
@@ -93,6 +94,11 @@ func customError(w http.ResponseWriter, error string, code int) {
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST")
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		w.Header().Set("X-Amz-Version-Id", "null")
+=======
+		w.Header().Set("Server", "Microsoft-IIS/10.0")
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Header().Set("X-Content-Type-Options", "nosniff")
+>>>>>>> d71f646207b598c5ecac0aea21de540dc79fe5d1
 		w.Header().Set("X-XSS-Protection", "1; mode=block")
 		w.Header().Set("X-Frame-Options", "SAMEORIGIN")
 		w.Header().Set("Content-Security-Policy", "default-src https:")
