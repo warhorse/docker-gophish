@@ -1,7 +1,7 @@
 .PHONY: build all
 .DEFAULT_GOAL := all
 
-IMAGE?=warhorse/gophish
+IMAGE?=almart/gophish
 
 all: build
 
